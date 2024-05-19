@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +10,27 @@ public class Interface {
     JFrame addWarehouseFrame = new JFrame();
     JButton openWarehouseButton = new JButton(" Open Warehouse ");
     JButton closeProgramButton = new JButton(" Close Management System ");
-    JButton addWarehouseButton;// = new JButton("+");
+    JButton addWarehouseButton;
+    JButton addWarehouse = new JButton("Add");
+    JButton closeAddingWarehouse = new JButton("Close");
 
-    JTable warehousesTable; //= new JTable(columnNames);
+    JTable warehousesTable;
+
+    JTextField newWarehouseID = new JTextField();
+    JTextField newWarehouseName = new JTextField();
+    JTextField newWarehouseCity = new JTextField();
+
+    JLabel newWarehouseIDLabel = new JLabel("Write new warehouse ID:");
+    JLabel newWarehouseNameLabel = new JLabel("Write new warehouse name:");
+    JLabel newWarehouseCityLabel = new JLabel("Write new warehouse city:");
+
+    String[] columnNames = {"Warehouse ID", "Name", "City"};
+    String[][] data = {
+            {"5002", "pups", "Gdon"},
+            {"123", "KUp", "Warszawa"}
+    };
+
+    DefaultTableModel model = new DefaultTableModel(data, columnNames);
 
     void startMenu(){
         setOpenWarehouseButton();
@@ -50,13 +69,7 @@ public class Interface {
     }
 
     void setWarehousesTable(){
-        String[] columnNames = {"Warehouse ID", "Name", "City"};
-        String[][] data = {
-                {"5002", "Pupa", "Gdańsk"},
-                {"123", "KUPSON", "Warszawa"}
-        };
-
-        warehousesTable = new JTable(data, columnNames);
+        warehousesTable = new JTable(model);
         warehousesTable.setBounds(10,10,570, 400);
 
         JScrollPane sp = new JScrollPane(warehousesTable);
@@ -66,6 +79,7 @@ public class Interface {
 
     void setAddWarehouseButton(){
         addWarehouseButton = new JButton() {
+            // To properly display "+" (because default font was to big)
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -83,8 +97,6 @@ public class Interface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setAddWarehouseFrame();
-                //Otworzenie formularza do dodania magazynu
-                //i dodanie do warehousesTable
             }
         });
         startFrame.add(addWarehouseButton);
@@ -96,8 +108,72 @@ public class Interface {
         addWarehouseFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addWarehouseFrame.setResizable(false);
 
+        setAddWarehouseLabels();
+        setAddWarehouseTextFields();
+        setAddWarehouseButtons();
+
         addWarehouseFrame.setLayout(null);
         addWarehouseFrame.setVisible(true);
     }
 
+    void setAddWarehouseLabels(){
+        newWarehouseIDLabel.setBounds(5, 5, 200, 15);
+        newWarehouseNameLabel.setBounds(5, 45, 200, 15);
+        newWarehouseCityLabel.setBounds(5, 85, 200, 15);
+
+        addWarehouseFrame.add(newWarehouseIDLabel);
+        addWarehouseFrame.add(newWarehouseNameLabel);
+        addWarehouseFrame.add(newWarehouseCityLabel);
+
+        newWarehouseIDLabel.setVisible(true);
+        newWarehouseNameLabel.setVisible(true);
+        newWarehouseCityLabel.setVisible(true);
+    }
+
+    void setAddWarehouseTextFields(){
+        newWarehouseID.setBounds(10, 20, 200, 20);
+        newWarehouseName.setBounds(10, 60, 200, 20);
+        newWarehouseCity.setBounds(10, 100, 200, 20);
+
+
+        addWarehouseFrame.add(newWarehouseID);
+        addWarehouseFrame.add(newWarehouseName);
+        addWarehouseFrame.add(newWarehouseCity);
+
+        newWarehouseID.setVisible(true);
+        newWarehouseName.setVisible(true);
+        newWarehouseCity.setVisible(true);
+
+    }
+
+    void setAddWarehouseButtons(){
+        addWarehouseFrame.add(addWarehouse);
+        addWarehouseFrame.add(closeAddingWarehouse);
+
+        addWarehouse.setBounds(10, 150, 70, 20);
+        closeAddingWarehouse.setBounds(140, 150, 70, 20);
+        addWarehouse.setFocusable(false);
+        closeAddingWarehouse.setFocusable(false);
+
+        closeAddingWarehouse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addWarehouseFrame.setVisible(false);
+            }
+        });
+
+        if (addWarehouse.getActionListeners().length == 0) { // Avoiding creating multiple ActionListeners
+            addWarehouse.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String[] newData = {"12367", "klok", "brand"}; //DODAĆ UZUPEŁNANIE DO TABELI DANYCH Z FORMULARZA!!!!
+                    model.addRow(newData);                          //DODAĆ ZAPAMIĘTANIE DODANYCH DANYCH!!!!!!
+                    addWarehouseFrame.setVisible(false);
+                }
+            });
+        }
+
+        addWarehouse.setVisible(true);
+        closeAddingWarehouse.setVisible(true);
+    }
 }

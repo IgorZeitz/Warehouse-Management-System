@@ -3,7 +3,7 @@
 public class Main {
     public static void main(String[] args) {
 
-        Warehouse warehouse1 = new Warehouse("Xtrack", "Gdańsk");
+        Warehouse warehouse1 = new Warehouse("Zak0", "Warsaw");
 
         Interface startMenu = new Interface();
         startMenu.startMenu();

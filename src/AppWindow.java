@@ -3,8 +3,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
-public class Interface {
+public class AppWindow {
 
     static JFrame startFrame = new JFrame();
     JFrame addWarehouseFrame = new JFrame();
@@ -161,12 +164,16 @@ public class Interface {
                 addWarehouseFrame.setVisible(false);
             }
         });
-
         if (addWarehouse.getActionListeners().length == 0) { // Avoiding creating multiple ActionListeners
             addWarehouse.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String[] newData = {"12367", "klok", "brand"}; //DODAĆ UZUPEŁNANIE DO TABELI DANYCH Z FORMULARZA!!!!
+                    //Adding warehouses from form TextFields
+                    String idToAdd = newWarehouseID.getText();
+                    String nameToAdd = newWarehouseName.getText();
+                    String cityToAdd = newWarehouseCity.getText();
+
+                    String[] newData = {idToAdd, nameToAdd, cityToAdd};
                     model.addRow(newData);                          //DODAĆ ZAPAMIĘTANIE DODANYCH DANYCH!!!!!!
                     addWarehouseFrame.setVisible(false);
                 }
@@ -176,4 +183,28 @@ public class Interface {
         addWarehouse.setVisible(true);
         closeAddingWarehouse.setVisible(true);
     }
+
+
+/*
+    private void loadDataFromFile(String fileName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            //ArrayList<String[]> data = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                String[] rowData = line.split(",");
+                data.add(rowData);
+            }
+            // Czyszczenie modelu tabeli przed załadowaniem nowych danych
+            model.setRowCount(0);
+            // Dodanie danych do modelu tabeli
+            for (String[] row : data) {
+                model.addRow(row);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Error loading data from file", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+ */
+
 }
